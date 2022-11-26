@@ -18,9 +18,9 @@ from pyrogram.handlers import CallbackQueryHandler, MessageHandler
 async def handle_mirrorset(client, message):
     user_id= message.from_user.id
     if await is_rclone_config(user_id, message):
-        if DEFAULT_OWNER_REMOTE := config_dict['DEFAULT_OWNER_REMOTE']:
+        if config_dict['DEFAULT_OWNER_REMOTE']:
             if user_id == OWNER_ID:
-                update_rclone_data("MIRRORSET_REMOTE", DEFAULT_OWNER_REMOTE, user_id)
+                update_rclone_data("MIRRORSET_REMOTE", config_dict['DEFAULT_OWNER_REMOTE'], user_id)
         rclone_remote = get_rclone_data("MIRRORSET_REMOTE", user_id)              
         base_dir= get_rclone_data("MIRRORSET_BASE_DIR", user_id)
         if config_dict['MULTI_RCLONE_CONFIG'] or CustomFilters._owner_query(user_id): 
