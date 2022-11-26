@@ -98,11 +98,11 @@ def new_thread(fn):
 async def get_readable_message():
     async with status_dict_lock:
         msg = ""
-        if STATUS_LIMIT := config_dict['STATUS_LIMIT']:
+        if config_dict['STATUS_LIMIT'] is not None:
             tasks = len(status_dict)
-            globals()['PAGES'] = ceil(tasks/STATUS_LIMIT)
+            globals()['PAGES'] = ceil(tasks/config_dict['STATUS_LIMIT'])
             if PAGE_NO > PAGES and PAGES != 0:
-                globals()['COUNT'] -= STATUS_LIMIT
+                globals()['COUNT'] -= config_dict['STATUS_LIMIT']
                 globals()['PAGE_NO'] -= 1
         for index, download in enumerate(list(status_dict.values())[COUNT:], start=1):
             msg += f"<b>Status: </b> {download.status()}"
@@ -133,7 +133,7 @@ async def get_readable_message():
             else:
                 msg += f"\n<code>/{BotCommands.CancelCommand} {download.gid()}</code>"
             msg += "\n\n"
-            if index == STATUS_LIMIT:
+            if index == config_dict['STATUS_LIMIT']:
                 break
         if len(msg) == 0:
             return None, None
