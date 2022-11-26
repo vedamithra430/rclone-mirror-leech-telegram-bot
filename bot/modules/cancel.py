@@ -60,10 +60,10 @@ async def cancel_all_update(client, callbackquery):
 
 def cancel_all_(status, loop):
     gid = ''
-    while dl := asyncio.run_coroutine_threadsafe(getAllDownload(status), loop).result():
-        if dl.gid() != gid:
-            gid = dl.gid()
-            dl.download().cancel_download()
+    while asyncio.run_coroutine_threadsafe(getAllDownload(status), loop).result():
+        if asyncio.run_coroutine_threadsafe(getAllDownload(status), loop).result().gid() != gid:
+            gid = asyncio.run_coroutine_threadsafe(getAllDownload(status), loop).result().gid()
+            asyncio.run_coroutine_threadsafe(getAllDownload(status), loop).result().download().cancel_download()
             sleep(1)
 
 cancel_mirror_handler = MessageHandler(cancel_mirror, filters.command(BotCommands.CancelCommand) & (CustomFilters.user_filter | CustomFilters.chat_filter))
