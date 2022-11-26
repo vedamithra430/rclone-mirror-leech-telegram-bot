@@ -32,10 +32,10 @@ def initiate_search_tools():
         qbclient.search_install_plugin(src_plugins)
         qbclient.auth_log_out()
 
-    if SEARCH_API_LINK := config_dict['SEARCH_API_LINK']:
+    if config_dict['SEARCH_API_LINK']:
         global SITES
         try:
-            res = rget(f'{SEARCH_API_LINK}/api/v1/sites').json()
+            res = rget(f'{config_dict['SEARCH_API_LINK']}/api/v1/sites').json()
             SITES = {str(site): str(site).capitalize() for site in res['supported_sites']}
             SITES['all'] = 'All'
         except Exception:
